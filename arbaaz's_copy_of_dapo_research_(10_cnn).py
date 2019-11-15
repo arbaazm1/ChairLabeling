@@ -13,8 +13,6 @@ import time
 from torch import nn, optim
 import torchvision.models as models
 
-**Load Data**
-
 use_cuda = torch.cuda.is_available()
 device = torch.device("cuda:0" if use_cuda else "cpu")
 
