@@ -191,7 +191,9 @@ class CNN(nn.Module):
         x = self.conv6(x)
         x = self.conv7(x)
         x = self.conv8(x)
-        x = self.post_flatten(torch.flatten(x))
+        x = torch.flatten(x)
+        x = x.unsqueeze(0)
+        x = self.post_flatten(x)
         return x
 
 
