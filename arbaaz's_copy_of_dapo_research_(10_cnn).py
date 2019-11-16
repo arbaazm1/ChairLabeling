@@ -5,7 +5,6 @@ import torch
 from torch.utils import data
 import numpy as np
 import pandas as pd
-from skimage import io, transform
 
 from torch.utils.data import Dataset, DataLoader
 from torchvision import transforms, utils
