@@ -198,9 +198,6 @@ class CNN(nn.Module):
 cnn = CNN()
 cnn.cuda()
 
-from torchsummary import summary
-summary(cnn, input_size=(3, 1280, 1280))
-
 """**Training**"""
 
 #From 
