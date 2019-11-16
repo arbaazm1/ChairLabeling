@@ -180,8 +180,6 @@ class CNN(nn.Module):
             nn.ReLU()
             )
 
-
-
     def forward(self, x):
         x = self.conv1(x)
         x = self.conv2(x)
@@ -192,7 +190,7 @@ class CNN(nn.Module):
         x = self.conv7(x)
         x = self.conv8(x)
         x = torch.flatten(x)
-        #x = x.unsqueeze(0)
+        x = x.unsqueeze(0)
         x = self.post_flatten(x)
         return x
 
