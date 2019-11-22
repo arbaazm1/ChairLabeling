@@ -38,7 +38,7 @@ class MTurkTrain(Dataset):
     label = img_label_pair[1]
     return img,label
 
-params = {'batch_size': 10,
+params = {'batch_size': 1,
           'shuffle': True,
           'num_workers': 0}
 
@@ -196,48 +196,46 @@ class CNN(nn.Module):
 model = CNN()
 model.to(device)
 
-max_epochs = 1
-
-loss_function = nn.CrossEntropyLoss()
-optimizer = optim.Adam(model.parameters())
-
-start_ts = time.time()
-model.train()
-batches = params['batch_size']
-
-for epoch in range(max_epochs):
-    print("EPOCH: " + str(epoch))
-    total_loss = 0
-  #Training
-    for idx, data in enumerate(training_generator):
-        X, y = data[0].to(device), data[1].to(device)
-        model.zero_grad()
-        outputs = model(X)
-        #print(outputs.data)
-        print("     on to loss")
-        loss = loss_function(outputs, y)
-        loss.backward()
-        print("     backprop")
-        optimizer.step()
-        current_loss = loss.item()
-        total_loss += current_loss
-        if(idx % 30 == 0):
-            print("EPOCH: "  + str(epoch))
-        print("     Loss: {:.4f}".format(total_loss/(idx+1)))
-
-    if torch.cuda.is_available():
-        torch.cuda.empty_cache()
-
-"""**Save Model**"""
-
-path = "8cnn"
-torch.save(model.state_dict(), path)
+# max_epochs = 1
+#
+# loss_function = nn.CrossEntropyLoss()
+# optimizer = optim.Adam(model.parameters())
+#
+# start_ts = time.time()
+# model.train()
+# batches = params['batch_size']
+#
+# for epoch in range(max_epochs):
+#     print("EPOCH: " + str(epoch))
+#     total_loss = 0
+#   #Training
+#     for idx, data in enumerate(training_generator):
+#         X, y = data[0].to(device), data[1].to(device)
+#         model.zero_grad()
+#         outputs = model(X)
+#         #print(outputs.data)
+#         print("     on to loss")
+#         loss = loss_function(outputs, y)
+#         loss.backward()
+#         print("     backprop")
+#         optimizer.step()
+#         current_loss = loss.item()
+#         total_loss += current_loss
+#         if(idx % 30 == 0):
+#             print("EPOCH: "  + str(epoch))
+#         print("     Loss: {:.4f}".format(total_loss/(idx+1)))
+#
+#     if torch.cuda.is_available():
+#         torch.cuda.empty_cache()
+#
+# """**Save Model**"""
+#
+# path = "8cnn"
+# torch.save(model.state_dict(), path)
 
 """**Load Pre-saved Model**"""
 
-#model_save_name = 'maxed_cnn.pt'
-#path = F"/content/gdrive/My Drive/VRResearch/{model_save_name}"
-#model.load_state_dict(torch.load(path))
+model.load_state_dict(torch.load("maxed_cnn.pt"))
 
 """**Validation**"""
 
