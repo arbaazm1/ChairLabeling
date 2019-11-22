@@ -221,6 +221,7 @@ for epoch in range(max_epochs):
   #Training
     for idx, data in enumerate(training_generator):
         X, y = data[0].to(device), data[1].to(device)
+        print(y)
         model.zero_grad()
         outputs = model(X)
         print(outputs.data)
