@@ -206,7 +206,7 @@ class CNN(nn.Module):
 model = CNN()
 model.to(device)
 
-max_epochs = 10
+max_epochs = 1
 
 loss_function = nn.CrossEntropyLoss()
 optimizer = optim.Adam(model.parameters())
