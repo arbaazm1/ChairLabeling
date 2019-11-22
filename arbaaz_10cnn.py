@@ -27,7 +27,7 @@ class MTurkTrain(Dataset):
 
   def __len__(self):
     return self.data_frame.shape[0]
-  
+
   def __getitem__(self,idx):
     transform = transforms.Compose([transforms.ToTensor(),transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
     img_label_pair = self.data_frame.iloc[idx]
@@ -76,7 +76,7 @@ class CNN(nn.Module):
                 stride=1,                   # filter movement/step
                 padding=1,                  # if want same width and length of this image after Conv2d, padding=(kernel_size-1)/2 if stride=1
             ),                              # output shape (16, 640, 640)
-            nn.ReLU(),   
+            nn.ReLU(),
             nn.BatchNorm2d(16),                   # activation
             nn.MaxPool2d(kernel_size=2),    # choose max value in 2x2 area, output shape (16, 640, 640)
         )
@@ -88,7 +88,7 @@ class CNN(nn.Module):
                 stride=1,                   # filter movement/step
                 padding=1,                  # if want same width and length of this image after Conv2d, padding=(kernel_size-1)/2 if stride=1
             ),                              # output shape (32, 640, 640)
-            nn.ReLU(),   
+            nn.ReLU(),
             nn.BatchNorm2d(32),                   # activation
             nn.MaxPool2d(kernel_size=2),    # choose max value in 2x2 area, output shape (32, 320, 320)
         )
@@ -101,7 +101,7 @@ class CNN(nn.Module):
                 stride=1,                   # filter movement/step
                 padding=1,                  # if want same width and length of this image after Conv2d, padding=(kernel_size-1)/2 if stride=1
             ),                              # output shape (64, 320, 320)
-            nn.ReLU(),   
+            nn.ReLU(),
             nn.BatchNorm2d(64),                   # activation
             nn.MaxPool2d(kernel_size=2),    # choose max value in 2x2 area, output shape (64, 160, 160)
         )
@@ -114,7 +114,7 @@ class CNN(nn.Module):
                 stride=1,                   # filter movement/step
                 padding=1,                  # if want same width and length of this image after Conv2d, padding=(kernel_size-1)/2 if stride=1
             ),                              # output shape (128, 160, 160)
-            nn.ReLU(),   
+            nn.ReLU(),
             nn.BatchNorm2d(128),                   # activation
             nn.MaxPool2d(kernel_size=2),    # choose max value in 2x2 area, output shape (128, 80, 80)
         )
@@ -127,7 +127,7 @@ class CNN(nn.Module):
                 stride=1,                   # filter movement/step
                 padding=1,                  # if want same width and length of this image after Conv2d, padding=(kernel_size-1)/2 if stride=1
             ),                              # output shape (256, 80, 80)
-            nn.ReLU(),   
+            nn.ReLU(),
             nn.BatchNorm2d(256),                   # activation
             nn.MaxPool2d(kernel_size=2),    # choose max value in 2x2 area, output shape (256, 40, 40)
         )
@@ -140,7 +140,7 @@ class CNN(nn.Module):
                 stride=1,                   # filter movement/step
                 padding=1,                  # if want same width and length of this image after Conv2d, padding=(kernel_size-1)/2 if stride=1
             ),                              # output shape (512, 40, 40)
-            nn.ReLU(),   
+            nn.ReLU(),
             nn.BatchNorm2d(512),                   # activation
             nn.MaxPool2d(kernel_size=2),    # choose max value in 2x2 area, output shape (512, 20, 20)
         )
@@ -153,7 +153,7 @@ class CNN(nn.Module):
                 stride=1,                   # filter movement/step
                 padding=1,                  # if want same width and length of this image after Conv2d, padding=(kernel_size-1)/2 if stride=1
             ),                              # output shape (1024, 20, 20)
-            nn.ReLU(),   
+            nn.ReLU(),
             nn.BatchNorm2d(1024),                   # activation
             nn.MaxPool2d(kernel_size=2),    # choose max value in 2x2 area, output shape (1024, 10, 10)
         )
@@ -166,9 +166,9 @@ class CNN(nn.Module):
                 stride=1,                   # filter movement/step
                 padding=1,                  # if want same width and length of this image after Conv2d, padding=(kernel_size-1)/2 if stride=1
             ),                              # output shape (2048, 10, 10)
-            nn.ReLU(),   
+            nn.ReLU(),
             nn.BatchNorm2d(2048),                   # activation
-            nn.MaxPool2d(kernel_size=2)    # choose max value in 2x2 area, output shape (2048, 5, 5)            
+            nn.MaxPool2d(kernel_size=2)    # choose max value in 2x2 area, output shape (2048, 5, 5)
         )
 
         self.post_flatten = nn.Sequential(
@@ -195,15 +195,16 @@ class CNN(nn.Module):
         return x
 
 
-cnn = CNN()
-cnn.cuda()
+# cnn = CNN()
+# cnn.cuda()
 
 """**Training**"""
 
-#From 
+#From
 # https://zablo.net/blog/post/using-resnet-for-mnist-in-pytorch-tutorial/
 
 model = CNN()
+model.to(device)
 
 max_epochs = 1
 
@@ -217,9 +218,9 @@ batches = params['batch_size']
 for epoch in range(max_epochs):
     print("EPOCH: " + str(epoch))
     total_loss = 0
-  #Training 
+  #Training
     for idx, data in enumerate(training_generator):
-        X, y = data[0], data[1]
+        X, y = data[0].to(device), data[1].to(device)
         model.zero_grad()
         outputs = model(X)
         print("     on to loss")
@@ -230,7 +231,7 @@ for epoch in range(max_epochs):
         current_loss = loss.item()
         total_loss += current_loss
         print("     Loss: {:.4f}".format(total_loss/(idx+1)))
-    
+
     if torch.cuda.is_available():
         torch.cuda.empty_cache()
 
@@ -256,7 +257,7 @@ with torch.set_grad_enabled(False):
   for i, data in enumerate(validation_generator):
     print("Current: " + str(i) + " / " )
     # Transfer to GPU
-    X, y = data[0], data[1]
+    X, y = data[0].to(device), data[1].to(device)
      # Model computations
     outputs = model(X)
     predicted_classes = torch.max(outputs, 1)[1]
@@ -266,4 +267,3 @@ with torch.set_grad_enabled(False):
 print(f"Training time: {time.time()-start_ts}s")
 
 print(1 - (val_wrong / 387))
-
