@@ -223,7 +223,7 @@ for epoch in range(max_epochs):
         X, y = data[0].to(device), data[1].to(device)
         model.zero_grad()
         outputs = model(X)
-        print(outputs.data[torch.argmax(outputs)])
+        print(outputs.data)
         print("     on to loss")
         loss = loss_function(outputs, y)
         loss.backward()
