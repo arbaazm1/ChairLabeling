@@ -224,7 +224,7 @@ for epoch in range(max_epochs):
         model.zero_grad()
         outputs = model(X)
         print("ARBAAZ'S BS OUTPUTS")
-        print(outputs)
+        print(outputs.shape)
         print("     on to loss")
         loss = loss_function(outputs, y)
         loss.backward()
