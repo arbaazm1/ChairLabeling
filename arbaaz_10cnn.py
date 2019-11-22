@@ -206,7 +206,7 @@ class CNN(nn.Module):
 model = CNN()
 model.to(device)
 
-max_epochs = 1
+max_epochs = 10
 
 loss_function = nn.CrossEntropyLoss()
 optimizer = optim.Adam(model.parameters())
@@ -222,7 +222,7 @@ for epoch in range(max_epochs):
     for idx, data in enumerate(training_generator):
         X, y = data[0].to(device), data[1].to(device)
         model.zero_grad()
-        outputs = model(X)
+        #outputs = model(X)
         print(outputs.data)
         print("     on to loss")
         loss = loss_function(outputs, y)
