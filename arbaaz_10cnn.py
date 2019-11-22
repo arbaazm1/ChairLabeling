@@ -224,7 +224,7 @@ for epoch in range(max_epochs):
         X, y = data[0].to(device), data[1].to(device)
         print(y)
         model.zero_grad()
-        outputs = model(X).data
+        outputs = model(X)
         print(outputs)
         print("     on to loss")
         loss = loss_function(outputs, y)
