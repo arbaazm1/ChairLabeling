@@ -23,7 +23,7 @@ device = torch.device("cuda:0" if use_cuda else "cpu")
 class MTurkTrain(Dataset):
   def __init__(self,csv_file):
     self.data_frame = pd.read_csv(csv_file)
-    self.data_frame = pd.iloc[2:]
+    self.data_frame = self.data_frame.iloc[2:]
     self.img_dir = "/global/scratch/oafolabi/data/mturkCSVs/m-turk"
 
   def __len__(self):
