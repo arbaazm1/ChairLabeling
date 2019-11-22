@@ -159,17 +159,19 @@ class CNN(nn.Module):
             ),                              # output shape (2048, 10, 10)
             nn.ReLU(),
             nn.BatchNorm2d(2048),                   # activation
-            nn.MaxPool2d(kernel_size=2)    # choose max value in 2x2 area, output shape (2048, 5, 5)
-        )
+            nn.MaxPool2d(kernel_size=2),    # choose max value in 2x2 area, output shape (2048, 5, 5)
 
-        self.post_flatten = nn.Sequential(
+
+            nn.Flatten(),
             nn.Linear(51200,16),
             nn.ReLU(),
             nn.BatchNorm1d(16),
             nn.Dropout(0.5),
             nn.Linear(16, 2),
             nn.ReLU()
-            )
+        )
+
+
 
     def forward(self, x):
         x = self.conv1(x)
@@ -180,10 +182,7 @@ class CNN(nn.Module):
         x = self.conv6(x)
         x = self.conv7(x)
         x = self.conv8(x)
-        x = x.reshape(params['batch_size'],-1)
-        x = self.post_flatten(x)
         return x
-
 
 # cnn = CNN()
 # cnn.cuda()
