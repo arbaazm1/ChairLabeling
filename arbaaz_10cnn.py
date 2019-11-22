@@ -37,7 +37,7 @@ class MTurkTrain(Dataset):
     label = img_label_pair[1]
     return img,label
 
-params = {'batch_size': 1164,
+params = {'batch_size': 50,
           'shuffle': True,
           'num_workers': 0}
 
@@ -47,7 +47,7 @@ training_generator = data.DataLoader(train_dataset, **params)
 validation_set = MTurkTrain("/global/scratch/oafolabi/data/mturkCSVs/val_data.csv")
 validation_generator = data.DataLoader(validation_set, **params)
 
-"""**Arbaaz's Model**"""
+"""**Arbaaz's Bootlegged Model**"""
 
 import os
 # third-party library
