@@ -237,8 +237,7 @@ for epoch in range(max_epochs):
 
 """**Save Model**"""
 
-model_save_name = 'maxed_cnn.pt'
-path = F"/content/gdrive/My Drive/VRResearch/{model_save_name}"
+path = "8cnn"
 torch.save(model.state_dict(), path)
 
 """**Load Pre-saved Model**"""
