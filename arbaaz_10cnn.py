@@ -172,7 +172,7 @@ class CNN(nn.Module):
         )
 
         self.post_flatten = nn.Sequential(
-            nn.Linear(51200,16),
+            nn.Linear(512000,16),
             nn.ReLU(),
             #nn.BatchNorm1d(16),
             nn.Dropout(0.5),
@@ -223,7 +223,8 @@ for epoch in range(max_epochs):
         X, y = data[0].to(device), data[1].to(device)
         model.zero_grad()
         outputs = model(X)
-        print(outputs.data)
+        output_array = np.array(outputs.data)
+        print(output_array)
         print("     on to loss")
         loss = loss_function(outputs, y)
         loss.backward()
