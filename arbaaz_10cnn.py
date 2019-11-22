@@ -221,10 +221,9 @@ for epoch in range(max_epochs):
   #Training
     for idx, data in enumerate(training_generator):
         X, y = data[0].to(device), data[1].to(device)
-        print(y)
         model.zero_grad()
         outputs = model(X)
-        outputs = np.array([1 if outputs[1] > outputs[0] else 0])
+        outputs = outputs[torch.argmax(outputs)]
         print("     on to loss")
         loss = loss_function(outputs, y)
         loss.backward()
