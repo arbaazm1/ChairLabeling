@@ -177,7 +177,8 @@ class CNN(nn.Module):
             nn.InstanceNorm1d(16),
             nn.Dropout(0.5),
             nn.Linear(16, 2),
-            nn.ReLU()
+            nn.ReLU(),
+            nn.Linear(2,1)
             )
 
     def forward(self, x):
@@ -222,7 +223,7 @@ for epoch in range(max_epochs):
     for idx, data in enumerate(training_generator):
         X, y = data[0].to(device), data[1].to(device)
         model.zero_grad()
-        outputs = torch.tensor(model(X).max(0)[1])
+        outputs = model(X)
         print(outputs)
         print("     on to loss")
         loss = loss_function(outputs, y)
