@@ -222,8 +222,8 @@ for epoch in range(max_epochs):
     for idx, data in enumerate(training_generator):
         X, y = data[0].to(device), data[1].to(device)
         model.zero_grad()
-        #outputs = model(X)
-        print(outputs.data)
+        outputs = model(X)
+        #print(outputs.data)
         print("     on to loss")
         loss = loss_function(outputs, y)
         loss.backward()
