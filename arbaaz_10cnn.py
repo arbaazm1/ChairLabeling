@@ -37,7 +37,7 @@ class MTurkTrain(Dataset):
     label = img_label_pair[1]
     return img,label
 
-params = {'batch_size': 10,
+params = {'batch_size': 1,
           'shuffle': True,
           'num_workers': 0}
 
@@ -224,7 +224,6 @@ for epoch in range(max_epochs):
         model.zero_grad()
         outputs = model(X)
         print(outputs.data)
-        print(output_array)
         print("     on to loss")
         loss = loss_function(outputs, y)
         loss.backward()
