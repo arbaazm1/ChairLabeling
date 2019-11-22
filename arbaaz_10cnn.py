@@ -37,7 +37,7 @@ class MTurkTrain(Dataset):
     label = img_label_pair[1]
     return img,label
 
-params = {'batch_size': 1,
+params = {'batch_size': 2,
           'shuffle': True,
           'num_workers': 0}
 
@@ -49,20 +49,7 @@ validation_generator = data.DataLoader(validation_set, **params)
 
 """**Arbaaz's Bootlegged Model**"""
 
-import os
-# third-party library
-import torch
-import torch.nn as nn
-import torch.utils.data as Data
-import torchvision
 
-# torch.manual_seed(1)    # reproducible
-
-# Hyper Parameters
-EPOCH = 1               # train the training data n times, to save time, we just train 1 epoch
-BATCH_SIZE = 50
-LR = 0.001              # learning rate
-DOWNLOAD_MNIST = False
 
 
 class CNN(nn.Module):
