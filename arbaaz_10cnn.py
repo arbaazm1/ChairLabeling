@@ -37,7 +37,7 @@ class MTurkTrain(Dataset):
     label = img_label_pair[1]
     return img,label
 
-params = {'batch_size': 50,
+params = {'batch_size': 10,
           'shuffle': True,
           'num_workers': 0}
 
