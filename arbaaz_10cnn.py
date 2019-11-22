@@ -162,7 +162,7 @@ class CNN(nn.Module):
         )
 
         self.post_flatten = nn.Sequential(
-            nn.Linear(25600,16),
+            nn.Linear(51200,16),
             nn.ReLU(),
             nn.BatchNorm1d(16),
             nn.Dropout(0.5),
