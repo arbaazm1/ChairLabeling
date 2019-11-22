@@ -37,7 +37,7 @@ class MTurkTrain(Dataset):
     label = img_label_pair[1]
     return img,label
 
-params = {'batch_size': 2,
+params = {'batch_size': 1,
           'shuffle': True,
           'num_workers': 0}
 
@@ -172,9 +172,9 @@ class CNN(nn.Module):
         )
 
         self.post_flatten = nn.Sequential(
-            nn.Linear(51200*params['batch_size'],16),
+            nn.Linear(51200,16),
             nn.ReLU(),
-            #nn.BatchNorm1d(16),
+            nn.BatchNorm1d(16),
             nn.Dropout(0.5),
             nn.Linear(16, 2),
             nn.ReLU()
@@ -189,8 +189,7 @@ class CNN(nn.Module):
         x = self.conv6(x)
         x = self.conv7(x)
         x = self.conv8(x)
-        x = torch.flatten(x)
-        x = x.unsqueeze(0)
+        x = x.reshape(params['batch_size'],-1)
         x = self.post_flatten(x)
         return x
 
