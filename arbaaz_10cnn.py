@@ -37,9 +37,11 @@ class MTurkTrain(Dataset):
     label = img_label_pair[1]
     return img,label
 
-params = {'batch_size': 2,
+params = {'batch_size': 10,
           'shuffle': True,
           'num_workers': 0}
+print("SIZE")
+print(train_dataset.__len__())
 
 train_dataset = MTurkTrain("/global/scratch/oafolabi/data/mturkCSVs/train_data.csv")
 training_generator = data.DataLoader(train_dataset, **params)
@@ -159,7 +161,7 @@ class CNN(nn.Module):
         )
 
         self.post_flatten = nn.Sequential(
-            nn.Linear(51200,16),
+            nn.Linear(25600,16),
             nn.ReLU(),
             nn.BatchNorm1d(16),
             nn.Dropout(0.5),
