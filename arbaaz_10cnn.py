@@ -159,16 +159,19 @@ class CNN(nn.Module):
             ),                              # output shape (2048, 10, 10)
             nn.ReLU(),
             nn.BatchNorm2d(2048),                   # activation
-            nn.MaxPool2d(kernel_size=2)    # choose max value in 2x2 area, output shape (2048, 5, 5)
-        )
-        self.post_flatten = nn.Sequential(
+            nn.MaxPool2d(kernel_size=2),    # choose max value in 2x2 area, output shape (2048, 5, 5)
+
+
+            nn.Flatten(),
             nn.Linear(51200,16),
             nn.ReLU(),
             nn.BatchNorm1d(16),
             nn.Dropout(0.5),
             nn.Linear(16, 2),
             nn.ReLU()
-            )
+        )
+
+
 
     def forward(self, x):
         x = self.conv1(x)
@@ -179,9 +182,8 @@ class CNN(nn.Module):
         x = self.conv6(x)
         x = self.conv7(x)
         x = self.conv8(x)
-        x = x.reshape(params['batch_size'],-1)
-        x = self.post_flatten(x)
         return x
+
 
 # cnn = CNN()
 # cnn.cuda()
@@ -194,46 +196,44 @@ class CNN(nn.Module):
 model = CNN()
 model.to(device)
 
-# max_epochs = 1
-#
-# loss_function = nn.CrossEntropyLoss()
-# optimizer = optim.Adam(model.parameters())
-#
-# start_ts = time.time()
-# model.train()
-# batches = params['batch_size']
-#
-# for epoch in range(max_epochs):
-#     print("EPOCH: " + str(epoch))
-#     total_loss = 0
-#   #Training
-#     for idx, data in enumerate(training_generator):
-#         X, y = data[0].to(device), data[1].to(device)
-#         model.zero_grad()
-#         outputs = model(X)
-#         #print(outputs.data)
-#         print("     on to loss")
-#         loss = loss_function(outputs, y)
-#         loss.backward()
-#         print("     backprop")
-#         optimizer.step()
-#         current_loss = loss.item()
-#         total_loss += current_loss
-#         if(idx % 30 == 0):
-#             print("EPOCH: "  + str(epoch))
-#         print("     Loss: {:.4f}".format(total_loss/(idx+1)))
-#
-#     if torch.cuda.is_available():
-#         torch.cuda.empty_cache()
-#
-# """**Save Model**"""
-#
-# path = "8cnn"
-# torch.save(model.state_dict(), path)
+max_epochs = 1
 
-"""**Load Pre-saved Model**"""
+loss_function = nn.CrossEntropyLoss()
+optimizer = optim.Adam(model.parameters())
 
-model.load_state_dict(torch.load("maxed_cnn.pt"))
+start_ts = time.time()
+model.train()
+batches = params['batch_size']
+
+for epoch in range(max_epochs):
+    print("EPOCH: " + str(epoch))
+    total_loss = 0
+  #Training
+    for idx, data in enumerate(training_generator):
+        X, y = data[0].to(device), data[1].to(device)
+        model.zero_grad()
+        outputs = model(X)
+        #print(outputs.data)
+        print("     on to loss")
+        loss = loss_function(outputs, y)
+        loss.backward()
+        print("     backprop")
+        optimizer.step()
+        current_loss = loss.item()
+        total_loss += current_loss
+        if(idx % 30 == 0):
+            print("EPOCH: "  + str(epoch))
+        print("     Loss: {:.4f}".format(total_loss/(idx+1)))
+
+    if torch.cuda.is_available():
+        torch.cuda.empty_cache()
+
+"""**Save Model**"""
+
+#
+# """**Load Pre-saved Model**"""
+#
+# model.load_state_dict(torch.load("maxed_cnn.pt"))
 
 """**Validation**"""
 
@@ -251,5 +251,8 @@ with torch.set_grad_enabled(False):
     prediction_lst = predicted_classes.tolist()
     val_wrong += sum([1 if prediction_lst[i] != y[i] else 0 for i in range(len(prediction_lst))])
 
-
+val_acc = 1 - (val_wrong / 387)
+if(val_acc > 0.8):
+    path = "8cnn"
+    torch.save(model.state_dict(), path)
 print(1 - (val_wrong / 387))
