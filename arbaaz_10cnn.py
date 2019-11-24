@@ -41,7 +41,7 @@ class MTurkTrain(Dataset):
 
 params = {'batch_size': 2,
           'shuffle': True,
-          'num_workers': 0}
+          'num_workers': 2}
 
 train_dataset = MTurkTrain("/global/scratch/oafolabi/data/mturkCSVs/train_data.csv")
 training_generator = data.DataLoader(train_dataset, **params)
