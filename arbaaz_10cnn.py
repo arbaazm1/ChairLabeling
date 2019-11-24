@@ -39,7 +39,7 @@ class MTurkTrain(Dataset):
     label = img_label_pair[1]
     return img,label
 
-params = {'batch_size': 10,
+params = {'batch_size': 2,
           'shuffle': True,
           'num_workers': 0}
 
@@ -195,8 +195,13 @@ class CNN(nn.Module):
 # https://zablo.net/blog/post/using-resnet-for-mnist-in-pytorch-tutorial/
 
 model = CNN()
-model.to(device)
 
+if torch.cuda.device_count() > 1:
+  print("Let's use", torch.cuda.device_count(), "GPUs!")
+  # dim = 0 [30, xxx] -> [10, ...], [10, ...], [10, ...] on 3 GPUs
+  model = nn.DataParallel(model)
+
+model.to(device)
 max_epochs = 1
 
 loss_function = nn.CrossEntropyLoss()
