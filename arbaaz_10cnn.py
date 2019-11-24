@@ -204,6 +204,7 @@ optimizer = optim.Adam(model.parameters())
 
 start_ts = time.time()
 model.train()
+model.eval()
 batches = params['batch_size']
 
 for epoch in range(max_epochs):
