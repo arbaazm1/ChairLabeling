@@ -166,7 +166,7 @@ class CNN(nn.Module):
             nn.Flatten(),
             nn.Linear(51200,16),
             nn.ReLU(),
-            nn.InstanceNorm1d(16),
+            nn.BatchNorm1d(16),
             nn.Dropout(0.5),
             nn.Linear(16, 2),
             nn.ReLU()
