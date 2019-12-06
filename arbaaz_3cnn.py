@@ -92,10 +92,8 @@ class CNN(nn.Module):
             ),                              # output shape (16, 28, 28)
             nn.ReLU(),
             nn.BatchNorm2d(64),                   # activation
-            nn.MaxPool2d(kernel_size=2),    # choose max value in 2x2 area, output shape (16, 14, 14)
-        )
-
-        self.post_flatten = nn.Sequential(
+            nn.MaxPool2d(kernel_size=2),
+            nn.Flatten(),
             nn.Linear(1658944, 16),
             nn.ReLU(),
             nn.BatchNorm2d(16),
@@ -108,8 +106,7 @@ class CNN(nn.Module):
         x = self.conv1(x)
         x = self.conv2(x)
         x = self.conv3(x)
-        x = x.view(x.size(0), -1)           # flatten the output of conv2 to (batch_size, 32 * 7 * 7)
-        output = self.post_flatten(x)
+        output = x
         return output
 
 # cnn = CNN()
